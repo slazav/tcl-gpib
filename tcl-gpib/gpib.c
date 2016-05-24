@@ -436,8 +436,8 @@ static int get_option(device *dp, Tcl_Interp *interp,
     break;
   }
   case O_TRIMRIGHT: {
-    if (dp->trimleft) {
-      Tcl_SetStringObj(ro,dp->trimleft,-1);
+    if (dp->trimright) {
+      Tcl_SetStringObj(ro,dp->trimright,-1);
     }
     break;
   }
