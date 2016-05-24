@@ -15,7 +15,7 @@ int gpib_delete_cmd(ClientData clientData, Tcl_Interp *interp,
 		    int objc, Tcl_Obj *CONST objv[]);
 void gpib_device_delete_proc(ClientData clientData);
 
-int Gpiblib_Init (Tcl_Interp *interp) {
+int Gpib_Init (Tcl_Interp *interp) {
   Tcl_CreateObjCommand(interp, "gpib_device", gpib_device_cmd,
 		       (ClientData)0, (Tcl_CmdDeleteProc*)NULL);
   Tcl_PkgProvide(interp,"GpibLib","1.3.2");
