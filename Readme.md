@@ -1,17 +1,56 @@
-#!/usr/bin/tclsh
+## TCL interface to linux-gpib library
 
-load ./libgpib.so
+from ROTA group
 
+#### Options:
+*  -timeout
+*  -eot
+*  -secondary
+*  -eos
+*  -bufferlen
+*  -address
+*  -board
+*  -trimleft
+*  -trimright
+*  -readymask
+*  -waitready
+
+#### Commands:
+
+*  read
+*  write
+*  cmd_read
+*  remote_enable
+*  sleep
+*  configure
+*  cget
+*  poll
+*  ready
+*  waitready
+*  cmd_wait_read
+*  clear
+*  go_to_local
+*  trigger
+*  write_list
+*  bus_command
+*  waitcond
+
+---
+## Usage
+
+```tcl
+package require GpibLib
+
+## open a GPIB device:
 set dev [gpib_device #auto -board 0 -address 9 -trimright \n -readymask 16]
-puts $dev
 
+## print some device parameters:
 puts "buffer length: [$dev cget -bufferlen]"
 puts "trim left: |[$dev cget -trimleft]|"
 
 $dev remote_enable
 $dev write *STB?
 puts "ready: [$dev ready]"
-#$dev sleep 0.1
 $dev waitready
 puts "poll: [$dev poll] [$dev poll 16] [$dev poll 12]"
 puts "ready: [$dev ready]"
@@ -27,7 +66,7 @@ $dev configure -trimright \n\r -waitready {1 1}
 puts [$dev cmd_wait_read system:date?]
 
 after idle {puts "I am async"}
-#after 500 [subst {gpib_device delete $dev; puts "I am bad async"}] 
+#after 500 [subst {gpib_device delete $dev; puts "I am bad async"}].
 
 $dev configure -timeout 0.1
 puts "start wait"
@@ -35,13 +74,11 @@ $dev sleep 1
 puts "end wait"
 puts "timeout: [$dev cget -timeout]"
 
-#gpib_device yy -address 10
-#yy write qqq
-#yy poll
-
 puts "go to local"
 $dev go_to_local
 puts "check it!"
 after 3000
-puts "deleting device"
+
+## delete device
 gpib_device delete $dev
+```

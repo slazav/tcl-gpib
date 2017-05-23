@@ -1,7 +1,7 @@
-%define teaname gpib
+%define teaname LibGpib
 %define major 1.3
 
-Name: tcl-%teaname
+Name: tcl-gpib
 Version: 1.3.2
 Release: alt1
 
@@ -24,7 +24,7 @@ tcl-gpib interface from ROTA group
 
 %files
 %_tcllibdir/libgpib.so
-%dir %_tcldatadir/%teaname%major
-%_tcldatadir/%teaname%major/pkgIndex.tcl
+%dir %_tcldatadir/%teaname-%major
+%_tcldatadir/%teaname-%major/pkgIndex.tcl
 
 %changelog
