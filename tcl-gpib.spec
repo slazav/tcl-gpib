@@ -20,6 +20,9 @@ tcl-gpib interface from ROTA group
 %setup -q
 
 %build
+%make
+
+%install
 %makeinstall
 
 %files
