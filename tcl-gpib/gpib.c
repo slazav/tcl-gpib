@@ -39,7 +39,7 @@ typedef struct {
   char *trimleft;
   char *trimright;
 } device;
- 
+
 
 #define ct(op) if ((op) != TCL_OK) return TCL_ERROR
 
@@ -535,6 +535,18 @@ static char* do_trim(device* dp, int* newlen) {
   return p;
 }
 
+static void str_tcl_to_null(char *s, int * len){
+  int i,j;
+  for (i=0, j=0; i<=len; ++i, ++j){
+    if (i<len-1 && s[i]==-64 && s[i+1]==-128){
+      s[i+1] = 0;
+      i++;
+    }
+    if (j!=i) s[j] = s[i];
+  }
+  if (j!=i) len=j;
+}
+
 static int device_read(device *dp, Tcl_Interp *interp,
 		int objc, Tcl_Obj *CONST objv[]) {
   char *s;
@@ -552,7 +564,9 @@ static int device_write(device *dp, Tcl_Interp *interp,
   char *s;
   int len;
   s = Tcl_GetStringFromObj(objv[1],&len);
-  if (s == NULL || len == 0) return TCL_OK;
+  if (len == 0) return TCL_OK;
+  str_tcl_to_null(s, &len);
+
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
   ct(checkerror(dp,interp));
@@ -592,7 +606,9 @@ static int device_bus_command(device *dp, Tcl_Interp *interp,
   char *s;
   int len;
   s = Tcl_GetStringFromObj(objv[1],&len);
-  if (s == NULL || len == 0) return TCL_OK;
+  if (len == 0) return TCL_OK;
+  str_tcl_to_null(s, &len);
+
   /*fprintf(stderr,"%d:|%s|\n",dp->board,s);*/
   dp->status = ibcmd(dp->board,s,len);
   ct(checkerror(dp,interp));
@@ -605,7 +621,9 @@ static int device_cmd_read(device *dp, Tcl_Interp *interp,
   char *s;
   int len;
   s = Tcl_GetStringFromObj(objv[1],&len);
-  if (s == NULL || len == 0) return TCL_OK; 
+  if (len == 0) return TCL_OK;
+  str_tcl_to_null(s, &len);
+
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
   ct(checkerror(dp,interp));
@@ -724,7 +742,9 @@ static int device_cmd_wait_read(device *dp, Tcl_Interp *interp,
   char *s;
   int len;
   s = Tcl_GetStringFromObj(objv[1],&len);
-  if (s == NULL || len == 0) return TCL_OK; 
+  if (len == 0) return TCL_OK;
+  str_tcl_to_null(s, &len);
+
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
   ct(checkerror(dp,interp));
@@ -776,7 +796,9 @@ static int device_write_list(device *dp, Tcl_Interp *interp,
     }
     ct(Tcl_ListObjIndex(interp,objv[1],i,&wstr));
     s = Tcl_GetStringFromObj(wstr,&len);
-    if (s == NULL || len == 0) continue; 
+    if (len == 0) continue;
+    str_tcl_to_null(s, &len);
+
     /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
     dp->status = ibwrt(dp->handle,s,len);
     ct(checkerror(dp,interp));
