@@ -431,20 +431,20 @@ static int get_option(device *dp, Tcl_Interp *interp,
   }
   case O_TRIMLEFT: {
     if (dp->trimleft) {
-      Tcl_SetStringObj(ro,dp->trimleft,-1);
+      Tcl_SetByteArrayObj(ro,(unsigned char*)dp->trimleft,-1);
     }
     break;
   }
   case O_TRIMRIGHT: {
     if (dp->trimright) {
-      Tcl_SetStringObj(ro,dp->trimright,-1);
+      Tcl_SetByteArrayObj(ro,(unsigned char*)dp->trimright,-1);
     }
     break;
   }
   case O_EOS:
   case O_READYMASK:
   case O_WAITREADY:
-    Tcl_SetStringObj(ro,"Not implemented",-1);
+    Tcl_SetByteArrayObj(ro,(unsigned char *)"Not implemented",-1);
     return TCL_ERROR;
   }
   return TCL_OK;
@@ -549,9 +549,9 @@ static int device_read(device *dp, Tcl_Interp *interp,
   
 static int device_write(device *dp, Tcl_Interp *interp,
 		int objc, Tcl_Obj *CONST objv[]) {
-  char *s;
+  unsigned char *s;
   int len;
-  s = Tcl_GetStringFromObj(objv[1],&len);
+  s = Tcl_GetByteArrayFromObj(objv[1],&len);
   if (s == NULL || len == 0) return TCL_OK;
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
@@ -589,9 +589,9 @@ static int device_waitcond(device *dp, Tcl_Interp *interp,
 
 static int device_bus_command(device *dp, Tcl_Interp *interp,
 		int objc, Tcl_Obj *CONST objv[]) {
-  char *s;
+  unsigned char *s;
   int len;
-  s = Tcl_GetStringFromObj(objv[1],&len);
+  s = Tcl_GetByteArrayFromObj(objv[1],&len);
   if (s == NULL || len == 0) return TCL_OK;
   /*fprintf(stderr,"%d:|%s|\n",dp->board,s);*/
   dp->status = ibcmd(dp->board,s,len);
@@ -604,7 +604,7 @@ static int device_cmd_read(device *dp, Tcl_Interp *interp,
   /* write command */
   char *s;
   int len;
-  s = Tcl_GetStringFromObj(objv[1],&len);
+  s = (char *)Tcl_GetByteArrayFromObj(objv[1],&len);
   if (s == NULL || len == 0) return TCL_OK; 
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
@@ -613,7 +613,7 @@ static int device_cmd_read(device *dp, Tcl_Interp *interp,
   dp->status = ibrd(dp->handle,dp->buffer,dp->buflen);
   ct(checkerror(dp,interp));
   dp->buffer[dp->count] = '\0';
-  s = do_trim(dp,&len);
+  s = (char *)do_trim(dp,&len);
   Tcl_SetObjResult(interp,Tcl_NewStringObj(s,len));
   return TCL_OK;
 }
@@ -723,7 +723,7 @@ static int device_cmd_wait_read(device *dp, Tcl_Interp *interp,
   /* write command */
   char *s;
   int len;
-  s = Tcl_GetStringFromObj(objv[1],&len);
+  s = (char *)Tcl_GetByteArrayFromObj(objv[1],&len);
   if (s == NULL || len == 0) return TCL_OK; 
   /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
   dp->status = ibwrt(dp->handle,s,len);
@@ -734,7 +734,7 @@ static int device_cmd_wait_read(device *dp, Tcl_Interp *interp,
   dp->status = ibrd(dp->handle,dp->buffer,dp->buflen);
   ct(checkerror(dp,interp));
   dp->buffer[dp->count] = '\0';
-  s = do_trim(dp,&len);
+  s = (char *)do_trim(dp,&len);
   Tcl_SetObjResult(interp,Tcl_NewStringObj(s,len));
   return TCL_OK;
 }
@@ -765,7 +765,7 @@ static int device_write_list(device *dp, Tcl_Interp *interp,
   double delay = dp->ready_step;
   int i, n, len;
   Tcl_Obj *wstr;
-  char *s;
+  unsigned char *s;
   if (objc > 2) {
     ct(Tcl_GetDoubleFromObj(interp,objv[2],&delay));
   }
@@ -775,7 +775,7 @@ static int device_write_list(device *dp, Tcl_Interp *interp,
       ct(do_sleep(dp,interp,delay));
     }
     ct(Tcl_ListObjIndex(interp,objv[1],i,&wstr));
-    s = Tcl_GetStringFromObj(wstr,&len);
+    s = Tcl_GetByteArrayFromObj(wstr,&len);
     if (s == NULL || len == 0) continue; 
     /*fprintf(stderr,"%d:|%s|\n",dp->handle,s);*/
     dp->status = ibwrt(dp->handle,s,len);
