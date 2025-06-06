@@ -1,8 +1,8 @@
 %define teaname LibGpib
-%define major 1.3
+%define major 1.4
 
 Name: tcl-gpib
-Version: 1.3.2
+Version: 1.4.0
 Release: alt1
 
 Summary: tcl-gpib interface from ROTA group
@@ -31,3 +31,8 @@ tcl-gpib interface from ROTA group
 %_tcldatadir/%teaname-%major/pkgIndex.tcl
 
 %changelog
+* Fri Jun 06 2025 Vladislav Zavjalov <slazav@altlinux.org> 1.4.0-alt1
+- support for zeros in data (fixes #1, thanks to @esternin)
+
+
+

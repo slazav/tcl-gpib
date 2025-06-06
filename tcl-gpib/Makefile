@@ -3,7 +3,7 @@ LDFLAGS=-shared   `pkg-config --libs-only-other tcl`
 LDLIBS=-lgpib -lm `pkg-config --libs-only-l tcl`
 
 name=LibGpib
-ver=1.3
+ver=1.4
 
 dir=/usr$(subst ${prefix},,${libdir})/tcl
 
