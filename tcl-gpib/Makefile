@@ -11,7 +11,7 @@ libgpib.so: gpib.c
 	$(CC) $(LDFLAGS) $(CFLAGS) $< $(LDLIBS) -o $@
 
 pkgIndex.tcl: pkgIndex.tcl.in
-	sed 's|%LIB_DIR%|${dir}|' $< > $@
+	sed 's|%LIB_DIR%|${dir}|;s|%VERSION%|${ver}|' $< > $@
 
 install: libgpib.so pkgIndex.tcl
 	mkdir -p ${libdir}/tcl/ ${datadir}/tcl/${name}-${ver}
