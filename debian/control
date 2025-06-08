@@ -1,0 +1,11 @@
+Source: tcl-gpib
+Section: System
+Priority: optional
+Build-Depends: tcl-dev
+Maintainer: Vladislav Zavjalov <vl.zavjalov@gmail.com>
+Standards-Version: 4.0.0
+
+Package: tcl-gpib
+Architecture: any
+Description: tcl-gpib interface from ROTA group
+
