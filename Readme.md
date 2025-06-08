@@ -82,3 +82,26 @@ after 3000
 ## delete device
 gpib_device delete $dev
 ```
+
+---
+## Building
+
+#### basic build
+
+```
+tcl-gpib
+make
+make install tcldatadir=/usr/share/tcl tcllibdir=/usr/lib64/tcl
+```
+
+#### building Altlinux package
+
+Spec file and configuration for `gear` is available. If the system is configured
+correctly, then `gear -ba` should be enough to build the rpm package.
+
+#### building Debian/Ubuntu package
+
+Files for building deb package are located in `debian` folder. Use
+script `alt2deb_build` from https://github.com/slazav/alt2deb for
+building the package (not tested).
+
