@@ -18,7 +18,7 @@ void gpib_device_delete_proc(ClientData clientData);
 int Gpib_Init (Tcl_Interp *interp) {
   Tcl_CreateObjCommand(interp, "gpib_device", gpib_device_cmd,
 		       (ClientData)0, (Tcl_CmdDeleteProc*)NULL);
-  Tcl_PkgProvide(interp,"GpibLib","1.3.2");
+  Tcl_PkgProvide(interp,"GpibLib","1.4");
   return TCL_OK;
 }
 

@@ -14,6 +14,7 @@ tcllibdir  ?= $(libdir)/tcl
 tcldatadir ?= $(datadir)/tcl
 
 libgpib.so: gpib.c
+	grep -q 'Tcl_PkgProvide(interp,"GpibLib","${ver}")' gpib.c || (echo "gpib.c: fix library version"; exit 1)
 	$(CC) $(LDFLAGS) $(CFLAGS) $< $(LDLIBS) -o $@
 
 pkgIndex.tcl: pkgIndex.tcl.in
