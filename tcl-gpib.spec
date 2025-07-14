@@ -11,6 +11,7 @@ Source: %name-%version.tar
 License: Unknown
 
 Requires: tcl
+BuildPreReq: rpm-build-tcl
 BuildRequires: tcl-devel
 
 %description
@@ -23,7 +24,7 @@ tcl-gpib interface from ROTA group
 %make
 
 %install
-%makeinstall
+%makeinstall tcldatadir=%buildroot%_tcldatadir tcllibdir=%buildroot%_tcllibdir
 
 %files
 %_tcllibdir/libgpib.so
