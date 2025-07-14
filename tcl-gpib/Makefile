@@ -10,8 +10,8 @@ prefix     ?= $(DESTDIR)/usr
 bindir     ?= $(prefix)/bin
 libdir     ?= $(prefix)/lib
 datadir    ?= $(prefix)/share
-tcllibdir  ?= $(libdir)/tcl
-tcldatadir ?= $(datadir)/tcl
+tcllibdir  ?= $(libdir)/tcltk
+tcldatadir ?= $(datadir)/tcltk
 
 libgpib.so: gpib.c
 	grep -q 'Tcl_PkgProvide(interp,"GpibLib","${ver}")' gpib.c || (echo "gpib.c: fix library version"; exit 1)
